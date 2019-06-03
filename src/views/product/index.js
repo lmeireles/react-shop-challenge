@@ -30,7 +30,7 @@ class Product extends React.Component {
 
   handleAddCart = async product => {
     this.setState({
-      moveToCart: "animated zoomOutRight delay-0.5s"
+      //moveToCart: "animated zoomOutRight delay-0.5s"
     });
     setInterval(
       () =>

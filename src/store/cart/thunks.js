@@ -16,23 +16,21 @@ export const addCart = product => async (dispatch, getState) => {
 
   let itemFound = false;
   let newList = [];
-  // let attProduct = products.product
+  let attProduct = products.product;
   if (items) {
     newList = items.map(i => {
-      if (i.sku === product.sku) {
+      if (i.id === product.id) {
         i.quantity++;
-        // attProduct.quantity = attProduct.quantity - i.quantity
+        attProduct.quantity = attProduct.quantity - i.quantity;
         itemFound = true;
-      } else {
-        itemFound = false;
       }
       return i;
     });
-    // dispatch(attDetailProduct())
+    dispatch(attDetailProduct());
   }
 
   if (!itemFound) {
-    product.quantity = 1;
+    product.quantity = product.quantity - 1;
     newList.push(product);
   }
 
@@ -48,10 +46,11 @@ export const addCart = product => async (dispatch, getState) => {
   let list = [];
   let valueCart;
 
-  if (newList) {
-    list = newList.filter(i => i.quantity > 0);
+  if (newList.length > 0) {
+    list = newList.filter(i => i.quantity >= 0);
+    console.log("aaaaaaaaaaaaaaaa", newList.filter(i => i.quantity >= 0));
     valueCart = list.map(n => n.quantity * n.price).reduce((a, b) => a + b);
-    if (list) {
+    if (list.length > 0) {
       dispatch(updatedTotalPrice(valueCart.toFixed(2)));
     } else {
       dispatch(updatedTotalPrice("0.00"));
