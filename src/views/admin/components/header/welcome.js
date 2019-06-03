@@ -1,6 +1,6 @@
-import React from 'react'
-import styled from 'styled-components'
-import colors from '../../../../layout/styled-components/colors'
+import React from "react";
+import styled from "styled-components";
+import colors from "../../../../components/layout/colors";
 
 const Welcome = styled.div`
   padding: 15px 0;
@@ -10,4 +10,4 @@ const Welcome = styled.div`
   align-items: center;
 `;
 
-export default Welcome
+export default Welcome;

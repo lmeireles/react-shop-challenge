@@ -1,6 +1,6 @@
-import React from 'react'
-import styled from 'styled-components'
-import colors from '../../../../layout/styled-components/colors'
+import React from "react";
+import styled from "styled-components";
+import colors from "../../../../components/layout/colors";
 
 const Content = styled.div`
   height: 200px;
@@ -9,4 +9,4 @@ const Content = styled.div`
   flex-flow: row wrap;
 `;
 
-export default Content
+export default Content;

@@ -1,6 +1,6 @@
-import React from 'react'
-import styled from 'styled-components'
-import colors from '../../../../layout/styled-components/colors'
+import React from "react";
+import styled from "styled-components";
+import colors from "../../../../components/layout/colors";
 
 const Avatar = styled.img`
   width: 80px;
@@ -10,4 +10,4 @@ const Avatar = styled.img`
   margin-bottom: 10px;
 `;
 
-export default Avatar
+export default Avatar;

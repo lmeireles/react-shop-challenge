@@ -1,6 +1,6 @@
-import React from 'react'
-import styled from 'styled-components'
-import Badge from './badge'
+import React from "react";
+import styled from "styled-components";
+import Badge from "./badge";
 
 const Content = styled.div`
   display: inline-flex;
@@ -14,11 +14,13 @@ const Icon = styled.i`
   color: #555;
 `;
 
-const IconWithBadge = (props) => (
+const IconWithBadge = props => (
   <Content margin={props.margin} onClick={props.onClick}>
-    <Icon className={'fa fa-' + props.icon} />
-    <Badge bg={props.bg} color={props.color}>{props.badgeContent}</Badge>
-  </Content>  
-)
+    <Icon className={"fa fa-" + props.icon} />
+    <Badge bg={props.bg} color={props.color}>
+      {props.badgeContent}
+    </Badge>
+  </Content>
+);
 
-export default IconWithBadge
+export default IconWithBadge;

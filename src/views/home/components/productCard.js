@@ -1,168 +1,92 @@
-import React from 'react'
-import styled from 'styled-components'
-import { Link } from 'react-router-dom'
+import React from "react";
+import styled from "styled-components";
+import { Link } from "react-router-dom";
+import colors from "../../../components/layout/colors";
+import theme from "../../../components/layout/theme";
+import Card from "@material-ui/core/Card";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+import CardMedia from "@material-ui/core/CardMedia";
 
-
-const CardContent = styled.div`
+const CardContainer = styled(Card)`
   flex: 1;
-  height: 460px;
-  margin: 15px 15px;
-  background-color: transparent;
-  position: relative;
+  flex-basis: 20%;
+  max-width: 20%;
+  height: 400px;
+  border-radius: 5px;
+  margin: 10px;
+  box-shadow: 0 10px 12px rgba(0, 0, 0, 0.2);
   display: flex;
-  flex-flow: column;
+  flex-direction: column;
+
+  @media (max-width: ${theme.viewports.tablet}) {
+    max-width: 100%;
+    flex-basis: 100%;
+  }
 `;
 
-const TopCard = styled.div`
-  width: 100%;
-  display: flex;
-  flex-flow: row wrap;
-`;
-
-const CenterCard = styled.div`
-  display: flex;
-  flex-flow: row wrap;
-
-`;
-const TitleCard = styled.h1`
-  font-size: 18px;
-  color: #d8d8d8;
-  padding: 5px 8px 5px 5px;
-  text-align: right;
-  flex: 1;
-`;
-
-const Category = styled.div`
-  width: 108px;
-  height: 44px;
-  background: linear-gradient(180deg, #BB6BD9 0%, #8E7EFB 100%);
-  border-top-right-radius: 22px;
-  border-bottom-right-radius: 22px;
-  padding: 14px;
-`;
-
-const Gallery = styled.div`
-  display: flex;
-  flex-flow: column;
-  width: 120px;
-  padding: 35px 0;
-  max-width: 10%;
-  flex: 1;
-`;
-
-const GalleryImages = styled.div`
-  -webkit-clip-path: polygon(0 40%, 100% 0%, 100% 60%, 0% 100%);
-  clip-path: polygon(0 40%, 100% 0%, 100% 60%, 0% 100%);
-  background-color: #000;
-  height: 100px;
-  width: 100px;
-  margin: -15px 0;
-`;
-
-const GalleryImage = styled.img`
-  width: 100%;
-  height: auto;
-`;
-
-const PriceCard = styled.div`
-  font-size: 20px;
-  font-weight: bold;
-  color: #000;
-  display: flex;
-  flex-flow: row;
-`;
-
-const ShareProduct = styled.span`
-  background-color: #9ED49E;
-  flex: 1;
-  padding: 8px 10px;
-  border-top-left-radius: 30px;
-  border-bottom-left-radius: 30px;
+const CardDescription = styled(CardContent)`
   font-size: 16px;
-  color: white;
+  color: ${colors.black};
+  flex: 1;
+  display: flex;
+  line-height: 1.4;
+  height: 170px;
+  justify-content: center;
+  align-items: center;
 `;
 
-const InfosProduct = styled.div`
-  max-width: 50%;
+const CardActionArea = styled(Link)`
+  text-decoration: none;
+`;
+
+const Actions = styled(CardActions)`
+  display: flex;
+  flex-direction: flow;
   flex: 1;
 `;
 
-const DetailProduct = styled.span`
-  background-color: #68C08F;
-  color: #fff;
+const CardPrice = styled.span`
+  color: ${colors.green};
   flex: 1;
-  font-size: 16px;
-  font-weight: bold;
-  padding: 9px 10px;
-  border-top-right-radius: 30px;
-  border-bottom-right-radius: 30px;
-`;
-
-const Image = styled.img`
-  width: 100%;
-  height: auto;
-  max-width: 400px;
-`;
-
-const ImageContainer = styled.div`
-  width: 300px;
-  height: auto;
-  max-width: 40%;
-  flex: 1;
-`;
-
-const Icon = styled.i`
-  margin-left: 5px;
-  cursor: pointer;
 `;
 
 const CardLink = styled(Link)`
-  color: #fff;
+  flex: 1;
+  transition: all 0.3s ease;
+  background: ${colors.gradient};
   text-decoration: none;
-  background: linear-gradient(180deg, #8676FB 0%, #AB7BFF 100%);
-  border-radius: 15px;
-  font-size: 12px;
-  padding: 10px 15px;
   text-transform: uppercase;
+  font-weight: bold;
+  font-size: 14px;
+  color: ${colors.white};
+  padding: 9px 13px;
+  margin: 1px;
+  border: none;
+  border-radius: 2px;
+  &:hover {
+    opacity: 0.7;
+  }
 `;
 
-const Card = (props) => (
-  <CardContent>
-    <TopCard color={props.color}>
-      <Category>Shoes</Category>
-      <TitleCard>
-        {(props.index+1) + '/' + props.quantity}
-      </TitleCard>
-    </TopCard>
-    <CenterCard>
-      <Gallery>
-        <GalleryImages>
-          <GalleryImage src={props.image} />
-        </GalleryImages>
-        <GalleryImages>
-          <GalleryImage src={props.image} />
-        </GalleryImages>
-        <GalleryImages>
-          <GalleryImage src={props.image} />
-        </GalleryImages>
-        <GalleryImages>
-          <GalleryImage src={props.image} />
-        </GalleryImages>
-      </Gallery>
-      <ImageContainer>
-        <Image src={props.image} />
-      </ImageContainer>
-      <InfosProduct>
-        {props.item}
-        <span>{'R$' + props.price}</span>
-        <PriceCard>
-          <CardLink to='#' onClick={props.onClick}>
-            Add to Cart
-          </CardLink>
-        </PriceCard>
-      </InfosProduct>
-    </CenterCard>
-  </CardContent>
-)
+const CardImage = styled(CardMedia)`
+  height: 150px;
+  flex: 1;
+`;
 
-export default Card;
+const CardItem = props => (
+  <CardContainer>
+    <CardActionArea to={"/product/" + props.link}>
+      <CardImage image={props.image} title={props.brand} />
+      <CardDescription>{props.item}</CardDescription>
+    </CardActionArea>
+    <Actions>
+      <CardPrice>{"R$" + props.price.toFixed(2)}</CardPrice>
+      <CardLink to="#" onClick={() => props.onClick()}>
+        Add to Cart
+      </CardLink>
+    </Actions>
+  </CardContainer>
+);
+
+export default CardItem;

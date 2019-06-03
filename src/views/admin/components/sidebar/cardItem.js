@@ -1,6 +1,6 @@
-import React from 'react'
-import styled from 'styled-components'
-import colors from '../../../../layout/styled-components/colors'
+import React from "react";
+import styled from "styled-components";
+import colors from "../../../../components/layout/colors";
 
 const CardItem = styled.div`
   width: 90px;
@@ -8,7 +8,7 @@ const CardItem = styled.div`
   padding: 5px;
   margin: 5px 15px;
   border-radius: 3px;
-  box-shadow: 0 10px 12px rgba(0,0,0,0.2);
+  box-shadow: 0 10px 12px rgba(0, 0, 0, 0.2);
   background-color: ${colors.white};
   display: flex;
   flex-flow: column;
@@ -17,8 +17,8 @@ const CardItem = styled.div`
   font-size: 14px;
   cursor: pointer;
   &:hover {
-    opacity: .7;
-  };
+    opacity: 0.7;
+  }
 `;
 
-export default CardItem
+export default CardItem;

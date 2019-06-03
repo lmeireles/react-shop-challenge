@@ -1,14 +1,12 @@
-import { 
-  LIST_SPOTLIGHTS_REQUESTED,
-  LIST_SPOTLIGHTS_FULFILLED,
-  LIST_SPOTLIGHTS_REJECTED,
-  LIST_PRODUCTS_REQUESTED, 
-  LIST_PRODUCTS_FULFILLED, 
+import {
+  LIST_PRODUCTS_REQUESTED,
+  LIST_PRODUCTS_FULFILLED,
   LIST_PRODUCTS_REJECTED,
   DETAIL_PRODUCT_REQUESTED,
   DETAIL_PRODUCT_FULFILLED,
   DETAIL_PRODUCT_REJECTED,
-  ATT_PRODUCTS
+  ATT_PRODUCTS,
+  ATT_DETAIL_PRODUCT
 } from "./action-types";
 
 const INITIAL_STATE = {
@@ -16,32 +14,21 @@ const INITIAL_STATE = {
   loading: false,
   list: null,
   product: null,
-  error: null,
-  spotlights: null
+  error: null
 };
 
 export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
     // Esse vai ser o de início
-    case LIST_SPOTLIGHTS_REQUESTED:
     case LIST_PRODUCTS_REQUESTED:
     case DETAIL_PRODUCT_REQUESTED: {
       return {
         ...state,
         loading: true,
         list: null,
-        spotlights: null,
         product: null,
         error: null
       };
-    }
-    case LIST_SPOTLIGHTS_FULFILLED: {
-      return {
-        ...state,
-        loading: false,
-        error: null,
-        spotlights: action.payload
-      }
     }
     // Esse vai ser o de sucesso
     case LIST_PRODUCTS_FULFILLED: {
@@ -61,7 +48,6 @@ export default function(state = INITIAL_STATE, action) {
       };
     }
     // Esse vai ser o de erro
-    case LIST_SPOTLIGHTS_REJECTED:
     case LIST_PRODUCTS_REJECTED:
     case DETAIL_PRODUCT_REJECTED: {
       return {
@@ -73,7 +59,13 @@ export default function(state = INITIAL_STATE, action) {
       return {
         ...state,
         list: action.payload
-      }
+      };
+    }
+    case ATT_DETAIL_PRODUCT: {
+      return {
+        ...state,
+        product: action.payload
+      };
     }
     default:
       return state;

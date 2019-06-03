@@ -1,20 +1,16 @@
-import axios from 'axios'
-import url from '../../api/api'
+import axios from "axios";
+import url from "../../utils/api";
 
 export const listProducts = () => {
-  return axios.get(url.dev + '/products')
-  .then(res => res.data)
-  .catch(err => err.response.data)
-}
+  return axios
+    .get(url.dev + "/products")
+    .then(res => res.data)
+    .catch(err => err.response.data);
+};
 
-export const requestProduct = (id) => {
-  return axios.get(url.dev + '/products/' + id)
-  .then(res => res.data)
-  .catch(err => err.response.data)
-}
-
-export const listSpotlights = () => {
-	return axios.get(url.dev + '/products/highligths')
-  .then(res => res.data)
-  .catch(err => err.response.data)
-}
+export const requestProduct = id => {
+  return axios
+    .get(url.dev + "/products/" + id)
+    .then(res => res.data)
+    .catch(err => err.response.data);
+};

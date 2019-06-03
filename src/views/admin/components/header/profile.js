@@ -1,6 +1,6 @@
-import React from 'react'
-import styled from 'styled-components'
-import colors from '../../../../layout/styled-components/colors'
+import React from "react";
+import styled from "styled-components";
+import colors from "../../../../components/layout/colors";
 
 const Profile = styled.div`
   width: 400px;
@@ -9,4 +9,4 @@ const Profile = styled.div`
   padding: 15px;
 `;
 
-export default Profile
+export default Profile;
