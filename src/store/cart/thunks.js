@@ -6,7 +6,7 @@ import {
   cartItems,
   updatedTotalPrice
 } from "./actions";
-import { attDetailProduct } from "../products/actions";
+import { listProductsFulfilled } from "../products/actions";
 
 export const addCart = product => async (dispatch, getState) => {
   const {
@@ -14,92 +14,110 @@ export const addCart = product => async (dispatch, getState) => {
     products
   } = getState();
 
+  // garante que nunca será nulo
+  const currentCartItems = items || [];
+  let hasStock = false;
   let itemFound = false;
-  let newList = [];
-  let attProduct = products.product;
-  if (items) {
-    newList = items.map(i => {
-      if (i.id === product.id) {
-        i.quantity++;
-        attProduct.quantity = attProduct.quantity - i.quantity;
-        itemFound = true;
+  let newCartList = [];
+
+  // não tem itens na listagem, mata função
+  if (!products || products.list.length === 0) return;
+
+  // esse Bloco vai atualizar os estoques
+  const newProductsList = products.list.map(p => {
+    if (p.id === product.id) {
+      if (p.quantity > 0) {
+        p.quantity--;
+        hasStock = true;
       }
-      return i;
-    });
-    dispatch(attDetailProduct());
-  }
+    }
+    return p;
+  });
+  // não tinha no stock, não faz nada
+  if (!hasStock) return;
+  dispatch(listProductsFulfilled(newProductsList));
+  // acabou de atualizar os estoques
 
+  // Esse IF vai atualizar o carrinho
+  newCartList = currentCartItems.map(i => {
+    if (i.id === product.id) {
+      i.quantity++;
+      itemFound = true;
+    }
+    return i;
+  });
+
+  // Não encontrou no carrinho, adiciona 1
   if (!itemFound) {
-    product.quantity = product.quantity - 1;
-    newList.push(product);
+    newCartList = [...currentCartItems, {...product, quantity: 1}]
   }
 
-  let itemsInCart = newList.map(n => n.quantity).reduce((a, b) => a + b);
+  const itemsInCart = newCartList.map(n => n.quantity).reduce((a, b) => a + b);
   dispatch(cartItems(itemsInCart));
-  dispatch(itemsUpdated(newList));
+  dispatch(itemsUpdated(newCartList));
 
   if (!id) {
     let randomCartId = Math.floor(Math.random() * 10000) + 1;
     dispatch(addIdToCart(randomCartId));
   }
 
-  let list = [];
-  let valueCart;
+  if (newCartList.length > 0) {
+    const list = newCartList.filter(i => i.quantity >= 0);
 
-  if (newList.length > 0) {
-    list = newList.filter(i => i.quantity >= 0);
-    console.log("aaaaaaaaaaaaaaaa", newList.filter(i => i.quantity >= 0));
-    valueCart = list.map(n => n.quantity * n.price).reduce((a, b) => a + b);
     if (list.length > 0) {
+      const valueCart = list.map(n => n.quantity * n.price).reduce((a, b) => a + b);
       dispatch(updatedTotalPrice(valueCart.toFixed(2)));
-    } else {
-      dispatch(updatedTotalPrice("0.00"));
-    }
-  } else {
-    list = items.filter(i => i.quantity > 0);
-    valueCart = list.map(n => n.quantity * n.price).reduce((a, b) => a + b);
-    if (list) {
-      dispatch(updatedTotalPrice(valueCart.toFixed(2)));
-    } else {
-      dispatch(updatedTotalPrice("0.00"));
+      return true;
     }
   }
 
+  dispatch(updatedTotalPrice("0.00"));
   return true;
 };
 
 export const subQuantity = sku => async (dispatch, getState) => {
   const {
-    cart: { items }
+    cart: { items },
+    products
   } = getState();
+
+  let productFoundInCart = false;
 
   let newList = items
     .map(i => {
-      if (i.sku === sku) {
+      if (i.id === sku) {
         i.quantity--;
+        productFoundInCart = true;
       }
       return i;
     })
     .filter(i => i.quantity > 0);
 
-  let itemsInCart;
+  // esse Bloco vai atualizar os estoques
+  if (productFoundInCart) {
+    const newProductsList = products.list.map(p => {
+      if (p.id === sku) {
+        p.quantity++;
+      }
+      return p;
+    });
+    dispatch(listProductsFulfilled(newProductsList));
+  }
+  // acabou de atualizar os estoques
+
+  let itemsInCart = 0;
   if (newList.length > 0) {
     itemsInCart = newList.map(n => n.quantity).reduce((a, b) => a + b);
-  } else {
-    itemsInCart = 0;
   }
+
   dispatch(cartItems(itemsInCart));
   dispatch(itemsUpdated(newList));
 
-  if (items) {
-    let list = items.filter(i => i.quantity > 0);
-    let valueCart;
-    if (list.length > 0) {
-      valueCart = list.map(n => n.quantity * n.price).reduce((a, b) => a + b);
-    } else {
-      valueCart = 0;
+  if (newList) {
+    let valueCart = 0;
+    if (newList.length > 0) {
+      valueCart = newList.map(n => n.quantity * n.price).reduce((a, b) => a + b);
     }
-
     dispatch(updatedTotalPrice(valueCart.toFixed(2)));
   }
 
@@ -107,39 +125,15 @@ export const subQuantity = sku => async (dispatch, getState) => {
 };
 
 export const addQuantity = sku => async (dispatch, getState) => {
-  const {
-    cart: { items },
-    products: { product }
-  } = getState();
+  const { products } = getState();
+  // não tem itens na listagem, mata função
+  if (!products || products.list.length === 0) return;
 
-  let newList;
+  const product = products.list.find(p => p.id === sku);
 
-  if (product.quantity !== 0) {
-    newList = items
-      .map(i => {
-        if (i.sku === sku) {
-          i.quantity++;
-        }
-        return i;
-      })
-      .filter(i => i.quantity > 0);
+  if (product) {
+    dispatch(addCart(product))
   }
-
-  let itemsInCart = newList.map(n => n.quantity).reduce((a, b) => a + b);
-  dispatch(cartItems(itemsInCart));
-
-  if (product.quantity > 0) {
-    dispatch(itemsUpdated(newList));
-  }
-
-  if (items) {
-    let list = items.filter(i => i.quantity > 0);
-    let valueCart = list.map(n => n.quantity * n.price).reduce((a, b) => a + b);
-
-    dispatch(updatedTotalPrice(valueCart.toFixed(2)));
-  }
-
-  return true;
 };
 
 export const showCart = param => async (dispatch, getState) => {

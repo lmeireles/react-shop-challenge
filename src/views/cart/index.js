@@ -42,9 +42,9 @@ const Cart = props => {
                 <CartItem key={key}>
                   <CartItemImage src={p.picture} item={p.title} />
                   <CartItemDescription item={p.title} price={p.price}>
-                    <Button onClick={() => props.subQuantity(p.sku)} text="-" />
+                    <Button onClick={() => props.subQuantity(p.id)} text="-" />
                     <span>{p.quantity}x</span>
-                    <Button onClick={() => props.addQuantity(p.sku)} text="+" />
+                    <Button onClick={() => props.addQuantity(p.id)} text="+" />
                   </CartItemDescription>
                 </CartItem>
               ))}

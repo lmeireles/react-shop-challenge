@@ -25,7 +25,6 @@ export default function(state = INITIAL_STATE, action) {
       return {
         ...state,
         loading: true,
-        list: null,
         product: null,
         error: null
       };
